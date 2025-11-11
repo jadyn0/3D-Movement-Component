@@ -7,7 +7,6 @@ using UnityEngine;
 public class playerMovement : MonoBehaviour
 {
     private Vector3 moveInput;
-    private Vector2 mouseInput;
     public float walkSpeed = 500;
     public float sprintSpeed = 750;
     public float turnRate = 5;
@@ -18,11 +17,14 @@ public class playerMovement : MonoBehaviour
     private bool jump;
     private bool grounded;
 
+    public Transform Cam;
+    private Vector3 moveVector;
+    
+
     void Update()
     {
 
         moveInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
-        mouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         jump = jump || Input.GetButtonDown("Jump");
     }
 
@@ -43,13 +45,17 @@ public class playerMovement : MonoBehaviour
         {
             move = walkSpeed;
         }
-        Vector3 moveVector = transform.TransformDirection(moveInput) * move * Time.fixedDeltaTime;
+        moveVector = Cam.transform.right * moveInput.x * move + Cam.transform.forward * moveInput.z * move;
+        moveVector.y = 0f;
         rb.linearVelocity = new Vector3(moveVector.x, rb.linearVelocity.y, moveVector.z);
     }
 
     private void turnPlayer()
     {
-        transform.Rotate(0f, mouseInput.x * turnRate, 0f);
+        if (moveVector.magnitude != 0f)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(moveVector), 0.2f);
+        }
     }
 
     private void jumpPlayer()
