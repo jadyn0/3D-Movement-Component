@@ -15,12 +15,19 @@ public class playerMovement : MonoBehaviour
     public float jumpSpeed = 300;
     public Rigidbody rb;
 
+    private bool jump;
+    private bool grounded;
+
     void Update()
     {
 
         moveInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
         mouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+        jump = jump || Input.GetButtonDown("Jump");
+    }
 
+    private void FixedUpdate()
+    {
         movePlayer();
         turnPlayer();
         jumpPlayer();
@@ -47,9 +54,24 @@ public class playerMovement : MonoBehaviour
 
     private void jumpPlayer()
     {
-        if (Input.GetKeyDown (KeyCode.Space))
+        if (jump && grounded)
         {
             rb.AddForce(new Vector3(0, jumpSpeed, 0), ForceMode.Impulse);
+            jump = false;
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Ground"))
+        {
+            grounded = true;
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.collider.CompareTag("Ground"))
+        {
+            grounded = false;
         }
     }
 }
