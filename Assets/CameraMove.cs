@@ -21,6 +21,7 @@ public class CameraMove : MonoBehaviour
         currentY += Input.GetAxis("Mouse Y") * sensivity * Time.deltaTime;
 
         currentY = Mathf.Clamp(currentY, YMin, YMax);
+        float d = distance;
 
         Vector3 Direction = new Vector3(0, 0, -distance);
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
