@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThirdPersonCamera : MonoBehaviour
+public class CameraMovement : MonoBehaviour
 {
     public Transform target;
     public LayerMask layerMask;
@@ -36,9 +36,14 @@ public class ThirdPersonCamera : MonoBehaviour
         Vector3 lookUp = rotation * target.up;
 
         float d = distance;
-        if (Physics.SphereCast(target.position, radius, -lookDirection, out RaycastHit hitInfo, distance, layerMask))
+        //if (Physics.SphereCast(target.position, radius, -lookDirection, out RaycastHit hitInfo, distance, layerMask))
+        //{
+        //    d = hitInfo.distance * .95f;
+        //}
+        RaycastHit hit;
+        if (Physics.Raycast(target.position, -lookDirection, out hit, distance, layerMask))
         {
-            d = hitInfo.distance * .95f;
+            d = hit.distance * .8f;
         }
 
         Vector3 cameraTarget = target.position - lookDirection * d;

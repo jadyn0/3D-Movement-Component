@@ -23,9 +23,8 @@ public class playerMovement : MonoBehaviour
 
     void Update()
     {
-
         moveInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
-        jump = jump || Input.GetButtonDown("Jump");
+        jump = (jump || Input.GetButtonDown("Jump")) && grounded;
     }
 
     private void FixedUpdate()
@@ -60,7 +59,7 @@ public class playerMovement : MonoBehaviour
 
     private void jumpPlayer()
     {
-        if (jump && grounded)
+        if (jump)
         {
             rb.AddForce(new Vector3(0, jumpSpeed, 0), ForceMode.Impulse);
             jump = false;
