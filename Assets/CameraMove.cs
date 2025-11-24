@@ -33,21 +33,12 @@ public class CameraMove : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
         Vector3 lookDirection = player.position - self.position;
         float d = distance;
-        //Vector3 rayOrigin = player.position;
-        //rayOrigin.y -= .45f;
-        //RaycastHit hit;
-        //if (Physics.Raycast(rayOrigin, -lookDirection, out hit, distance, layerMask))
-        //{
-        //    d = hit.distance * .8f;
-        //}
+
         if (Physics.SphereCast(player.position, .45f, -lookDirection, out RaycastHit hitInfo, distance, layerMask))
         {
             d = hitInfo.distance * .8f;
         }
-        //Debug.DrawRay(rayOrigin, -lookDirection * distance);
         direction = new Vector3(0, 0, -d);
-
-        //transform.position = player.position + rotation * direction;
         transform.position = Vector3.SmoothDamp(self.position, player.position + rotation * direction, ref velocity, .075f);
 
         transform.LookAt(player.position);
