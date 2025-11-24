@@ -7,8 +7,8 @@ using UnityEngine;
 public class playerMovement : MonoBehaviour
 {
     private Vector3 moveInput;
-    public float walkSpeed = 500;
-    public float sprintSpeed = 750;
+    public float walkSpeed = 10;
+    public float sprintSpeed = 15;
     public float turnRate = 5;
     private float move;
     public float jumpSpeed = 300;
